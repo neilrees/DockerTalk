@@ -1,0 +1,7 @@
+DockerFile
+docker-compose.yml
+*.mdf
+*.ldf
+bin/*.dll
+Nginx/
+db/

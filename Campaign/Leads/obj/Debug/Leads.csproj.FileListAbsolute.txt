@@ -1,0 +1,11 @@
+C:\Work\MarketingDemo\Campaign\Leads\bin\Debug\Leads.dll
+C:\Work\MarketingDemo\Campaign\Leads\bin\Debug\Leads.pdb
+C:\Work\MarketingDemo\Campaign\Leads\obj\Debug\Leads.csprojResolveAssemblyReference.cache
+C:\Work\MarketingDemo\Campaign\Leads\obj\Debug\Leads.csproj.CoreCompileInputs.cache
+C:\Work\MarketingDemo\Campaign\Leads\obj\Debug\Leads.dll
+C:\Work\MarketingDemo\Campaign\Leads\obj\Debug\Leads.pdb
+C:\Work\MarketingDemo\Campaign\Leads\bin\Debug\Leads.dll.config
+C:\Work\MarketingDemo\Campaign\Leads\bin\Debug\EntityFramework.dll
+C:\Work\MarketingDemo\Campaign\Leads\bin\Debug\EntityFramework.SqlServer.dll
+C:\Work\MarketingDemo\Campaign\Leads\bin\Debug\EntityFramework.xml
+C:\Work\MarketingDemo\Campaign\Leads\bin\Debug\EntityFramework.SqlServer.xml
