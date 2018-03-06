@@ -12,7 +12,13 @@ services:
 
   campaign-web:
     image: campaign-web-image
-    ports:
-      - "80:80"
     depends_on:
       - campaign-db
+
+  campaign-nginx:
+    image: campaign-nginx-image
+    ports:
+    - "80:80"
+    depends_on:
+    - campaign-db
+    - campaign-web
