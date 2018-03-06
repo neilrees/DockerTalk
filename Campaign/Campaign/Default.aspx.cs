@@ -1,24 +1,34 @@
 ﻿using System;
 using Leads;
+using QRCode;
 
 public partial class _Default : System.Web.UI.Page
 {
-    protected void Page_Load(object sender, EventArgs e)
-    {
-    }
-
     protected void Subscribe_Click(object sender, EventArgs e)
     {
-        ILeadManagement leads = new LeadManagement();
+        Register();
 
+        ShowSubscriptionCode();
+
+        SayThanks();
+    }
+
+    void Register()
+    {
+        var leads = new LeadManagement();
         var name = string.Format("{0} {1}", FirstName.Text, LastName.Text);
         var number = PhoneNumber.Text;
 
-        if (!string.IsNullOrEmpty(name) && !string.IsNullOrEmpty(number))
-        {
-            leads.Create(name, number);
-        }
+        leads.Create(name, number);
+    }
 
+    void ShowSubscriptionCode()
+    {
+        new SpecialQRCodeGenerator().GenereateCode(message);
+    }
+
+    void SayThanks()
+    {
         signupTable.Visible = false;
         message.Text = "Thanks!";
     }
