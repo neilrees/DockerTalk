@@ -1,0 +1,15 @@
+# First create an image with the Visual Studio Tools installed in it
+# https://blogs.msdn.microsoft.com/heaths/2017/09/18/installing-build-tools-for-visual-studio-2017-in-a-docker-container/
+FROM dockerdemo-msbuild:latest
+
+SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
+
+ADD ["./QRCode/bin/debug/QRCode.dll", "/Program Files (x86)/QRCode/QRCode.dll"]
+
+RUN New-Item -Path HKLM:\SOFTWARE\QRCodeSystems\QRGenerator -Force; \
+    Set-ItemProperty -Path HKLM:\SOFTWARE\QRCodeSystems\QRGenerator -Name LicenceKey -Value OurLicenceKeyGoesHere -Type String;
+
+ADD . /src
+
+WORKDIR /src
+CMD msbuild
