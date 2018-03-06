@@ -19,3 +19,14 @@ FROM microsoft/aspnet
 
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop';"]
 COPY --from=builder /src/PrecompiledWeb/Campaign/ /inetpub/wwwroot
+
+HEALTHCHECK --interval=5s                                                    \
+	CMD powershell -command                                                  \
+		try {                                                                \
+			$response = Invoke-WebRequest http://localhost -UseBasicParsing; \
+			if ($response.StatusCode -eq 200) { return 0; }                  \
+			else { return 1; }                                               \
+		}                                                                    \
+		catch {                                                              \
+			return 1;                                                        \
+		}
