@@ -1,0 +1,18 @@
+version: '3'
+
+services:
+
+  campaign-db:
+    image: microsoft/mssql-server-windows-express
+    ports:
+      - "1433:1433"
+    env_file:
+      - db/eula.env
+      - db/secrets.env
+
+  campaign-web:
+    image: campaign-web-image
+    ports:
+      - "80:80"
+    depends_on:
+      - campaign-db
