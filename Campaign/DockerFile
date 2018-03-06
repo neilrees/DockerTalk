@@ -1,6 +1,6 @@
 # First create an image with the Visual Studio Tools installed in it
 # https://blogs.msdn.microsoft.com/heaths/2017/09/18/installing-build-tools-for-visual-studio-2017-in-a-docker-container/
-FROM dockerdemo-msbuild:latest
+FROM dockerdemo-msbuild:latest as builder
 
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
 
@@ -12,4 +12,10 @@ RUN New-Item -Path HKLM:\SOFTWARE\QRCodeSystems\QRGenerator -Force; \
 ADD . /src
 
 WORKDIR /src
-CMD msbuild
+RUN msbuild
+
+# https://hub.docker.com/r/microsoft/aspnet/
+FROM microsoft/aspnet
+
+SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop';"]
+COPY --from=builder /src/PrecompiledWeb/Campaign/ /inetpub/wwwroot
