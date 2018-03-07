@@ -1,0 +1,153 @@
+Step 0 -- Hello world 
+
+docker image pull hello-world
+
+docker container run hello-world
+
+
+FROM microsoft/nanoserver
+COPY helloworld.txt /
+CMD cmd /c type helloworld.txt
+
+
+docker image build --tag myhelloworld .
+
+docker container run myhelloworld
+
+
+----------------------------------------------------------------------------------------------------------------
+
+Step 1 -- Broken build in visual studio
+
+----------------------------------------------------------------------------------------------------------------
+
+Step 2 -- Create a Build image
+
+# First create an image with the Visual Studio Tools installed in it
+# https://blogs.msdn.microsoft.com/heaths/2017/09/18/installing-build-tools-for-visual-studio-2017-in-a-docker-container/ 
+FROM dockerdemo-msbuild:latest
+
+SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop'; $ProgressPreference = 'SilentlyContinue';"]
+
+ADD ["./QRCode/bin/debug/QRCode.dll", "/Program Files (x86)/QRCode/QRCode.dll"]
+
+RUN New-Item -Path HKLM:\SOFTWARE\QRCodeSystems\QRGenerator -Force; \
+    Set-ItemProperty -Path HKLM:\SOFTWARE\QRCodeSystems\QRGenerator -Name LicenceKey -Value OurLicenceKeyGoesHere -Type String;
+
+
+ADD . /src
+
+WORKDIR /src
+CMD msbuild
+
+
+docker build --tag campaign-build .
+
+docker container run campaign-build
+
+
+---------------------------------------------------------------------------------------------------------------
+
+Step 3 -- Make a runtime image from the build image
+
+
+# https://blogs.msdn.microsoft.com/heaths/2017/09/18/installing-build-tools-for-visual-studio-2017-in-a-docker-container/ 
+FROM neilrees-msbuild:latest as builder
+
+ADD . /src
+WORKDIR /src
+ADD ["./QRCode/bin/debug/QRCode.dll", "/Program Files (x86)/QRCode/QRCode.dll"]
+RUN msbuild
+
+# https://hub.docker.com/r/microsoft/aspnet/
+FROM microsoft/aspnet 
+
+SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop';"]
+COPY --from=builder /src/PrecompiledWeb/Campaign/ /inetpub/wwwroot
+
+
+docker build --tag campaign-web-image
+
+docker container run campaign-web-image
+
+
+---------------------------------------------------------------------------------------------------------------
+
+Step 4 -- Need a database
+
+Change connection string to a named database server
+
+Spin up a database
+
+docker run --env ACCEPT_EULA=Y --env sa_password=DockerDemo123 --name campaign-db microsoft/mssql-server-windows-express 
+
+---------------------------------------------------------------------------------------------------------------
+
+Step 5 -- Adding health monitoring
+
+HEALTHCHECK --interval=5s                                                                       \
+	CMD powershell -command                                                                     \
+		try {                                                                                   \
+			$response = Invoke-WebRequest http://localhost -UseBasicParsing;                    \
+			if ($response.StatusCode -eq 200) { return 0; }                                     \
+			else { return 1; }                                                                  \
+		}                                                                                       \
+		catch {                                                                                 \
+			return 1;                                                                           \
+		}
+
+---------------------------------------------------------------------------------------------------------------
+
+Step 6 -- Getting combersome, add in some compose
+
+docker-compose up
+
+---------------------------------------------------------------------------------------------------------------
+
+Step 7 -- Security fix, add nginx
+
+Remove port from web and add proxy server:
+
+  campaign-nginx:
+    image: campaign-nginx-image
+    ports:
+    - "80:80"
+    depends_on:
+    - campaign-db
+    - campaign-web
+
+docker build --tag campaign-nginx-image .
+
+---------------------------------------------------------------------------------------------------------------
+
+Step 8 -- Introduce Async queue and worker process
+
+docker-compose up
+
+
+---------------------------------------------------------------------------------------------------------------
+
+Step 9 -- Run in the cloud
+
+docker --host docker:2376 --tls version
+
+docker-compose --host docker:2376 --tls --tlscacert c:\Users\Neil.Rees\.docker\ca.pem --tlscert c:\Users\Neil.Rees\.docker\cert.pem --tlskey c:\Users\Neil.Rees\.docker\key.pem --tlsverify up
+
+docker-compose --host docker:2376 --tls --tlscacert c:\Users\Neil.Rees\.docker\ca.pem --tlscert c:\Users\Neil.Rees\.docker\cert.pem --tlskey c:\Users\Neil.Rees\.docker\key.pem --tlsverify ps
+
+
+http://dockerdemo.cloudapp.net/
+
+
+-- Swam mode
+
+docker --host docker:2376 --tls swarm init
+
+docker --host docker:2376 --tls stack deploy --compose-file docker-compose.yml campaigndemo
+
+docker --host docker:2376 --tls stack services campaigndemo
+
+docker --host docker:2376 --tls service scale campaigndemo_campaign-web=5
+
+docker --host docker:2376 --tls stack rm campaigndemo
+
