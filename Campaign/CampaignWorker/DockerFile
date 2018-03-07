@@ -1,0 +1,7 @@
+FROM microsoft/windowsservercore
+
+ADD ./bin/Debug/* /worker/
+
+WORKDIR /worker
+
+CMD CampaignWorker.exe

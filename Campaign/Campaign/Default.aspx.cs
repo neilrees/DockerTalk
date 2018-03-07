@@ -1,6 +1,6 @@
 ﻿using System;
-using Leads;
 using QRCode;
+using Transport;
 
 public partial class _Default : System.Web.UI.Page
 {
@@ -15,11 +15,11 @@ public partial class _Default : System.Web.UI.Page
 
     void Register()
     {
-        var leads = new LeadManagement();
-        var name = string.Format("{0} {1}", FirstName.Text, LastName.Text);
-        var number = PhoneNumber.Text;
-
-        leads.Create(name, number);
+        Publisher.Send(new Contact
+        {
+            Name = string.Format("{0} {1}", FirstName.Text, LastName.Text),
+            Phone = PhoneNumber.Text
+        });
     }
 
     void ShowSubscriptionCode()

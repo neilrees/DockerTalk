@@ -13,12 +13,20 @@ services:
   campaign-web:
     image: campaign-web-image
     depends_on:
-      - campaign-db
+      - nats
 
   campaign-nginx:
     image: campaign-nginx-image
     ports:
     - "80:80"
     depends_on:
-    - campaign-db
     - campaign-web
+
+  nats:
+    image: sixeyed/nats
+
+  campaign-worker:
+    image: campaign-worker-image
+    depends_on:
+      - nats
+      - campaign-db

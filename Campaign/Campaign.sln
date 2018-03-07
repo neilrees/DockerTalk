@@ -6,7 +6,7 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{E24C65DC-7377-472B-9ABA-BC803B73C61A}") = "Campaign", "Campaign\", "{C2C888B2-8BFF-4DF6-B3D4-ECC33F9EB9DB}"
 	ProjectSection(WebsiteProperties) = preProject
 		TargetFrameworkMoniker = ".NETFramework,Version%3Dv4.5.2"
-		ProjectReferences = "{e40ebce9-1c6b-47ef-b2a6-5d36bc9feda7}|Leads.dll;"
+		ProjectReferences = "{e40ebce9-1c6b-47ef-b2a6-5d36bc9feda7}|Leads.dll;{f25e1eb0-9f5f-4f04-b283-c55b6b5da67f}|Transport.dll;"
 		Debug.AspNetCompiler.VirtualPath = "/Campaign"
 		Debug.AspNetCompiler.PhysicalPath = "Campaign\"
 		Debug.AspNetCompiler.TargetPath = "PrecompiledWeb\Campaign\"
@@ -35,6 +35,10 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		DockerFile = DockerFile
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CampaignWorker", "CampaignWorker\CampaignWorker.csproj", "{6E82A041-7B51-4405-A279-353005F70100}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Transport", "Transport\Transport.csproj", "{F25E1EB0-9F5F-4F04-B283-C55B6B5DA67F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +57,14 @@ Global
 		{D7D69F0D-2929-4F74-876E-17497E31CB70}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D7D69F0D-2929-4F74-876E-17497E31CB70}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D7D69F0D-2929-4F74-876E-17497E31CB70}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6E82A041-7B51-4405-A279-353005F70100}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6E82A041-7B51-4405-A279-353005F70100}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6E82A041-7B51-4405-A279-353005F70100}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6E82A041-7B51-4405-A279-353005F70100}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F25E1EB0-9F5F-4F04-B283-C55B6B5DA67F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F25E1EB0-9F5F-4F04-B283-C55B6B5DA67F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F25E1EB0-9F5F-4F04-B283-C55B6B5DA67F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F25E1EB0-9F5F-4F04-B283-C55B6B5DA67F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
