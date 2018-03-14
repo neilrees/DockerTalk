@@ -15,7 +15,7 @@ WORKDIR /src
 RUN msbuild
 
 # https://hub.docker.com/r/microsoft/aspnet/
-FROM microsoft/aspnet
+FROM microsoft/aspnet:4.7.1-windowsservercore-1709
 
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop';"]
 COPY --from=builder /src/PrecompiledWeb/Campaign/ /inetpub/wwwroot

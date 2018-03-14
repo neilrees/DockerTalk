@@ -3,7 +3,7 @@ version: '3'
 services:
 
   campaign-db:
-    image: microsoft/mssql-server-windows-express
+    image: microsoft/mssql-server-windows-express:1709
     ports:
       - "1433:1433"
     env_file:
@@ -11,22 +11,22 @@ services:
       - db/secrets.env
 
   campaign-web:
-    image: campaign-web-image
+    image: devforum.azurecr.io/campaign-web-image
     depends_on:
       - nats
 
   campaign-nginx:
-    image: campaign-nginx-image
+    image: devforum.azurecr.io/campaign-nginx-image
     ports:
     - "80:80"
     depends_on:
     - campaign-web
 
   nats:
-    image: sixeyed/nats
+    image: devforum.azurecr.io/nats
 
   campaign-worker:
-    image: campaign-worker-image
+    image: devforum.azurecr.io/campaign-worker-image
     depends_on:
       - nats
       - campaign-db

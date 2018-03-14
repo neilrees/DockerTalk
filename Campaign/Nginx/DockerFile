@@ -1,4 +1,4 @@
-FROM microsoft/windowsservercore
+FROM microsoft/windowsservercore:1709
 SHELL ["powershell", "-Command", "$ErrorActionPreference = 'Stop';"]
 
 EXPOSE 80 443
